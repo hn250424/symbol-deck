@@ -1,0 +1,6 @@
+export const ranges = {
+  arrows: [0x2190, 0x21FF],
+  math: [0x2200, 0x22FF],
+  shapes: [0x25A0, 0x25FF],
+  dingbats: [0x2700, 0x27BF]
+};

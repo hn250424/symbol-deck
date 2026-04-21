@@ -1,0 +1,31 @@
+.home {
+  padding: 20px;
+
+  &__title {
+    margin-bottom: 12px;
+  }
+
+  &__select {
+    margin-bottom: 16px;
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+}
+
+.unicode-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 8px;
+
+  &__item {
+    aspect-ratio: 1 / 1;
+    font-size: 20px;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+
+    &:hover {
+      background: #f5f5f5;
+    }
+  }
+}
