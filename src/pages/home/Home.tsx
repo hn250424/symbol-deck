@@ -1,12 +1,23 @@
-import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { ranges } from "../../unicode/constants";
 import { getUnicodes } from "../../unicode/utils";
 import "./Home.scss";
 
 const Home = () => {
-  const [selected, setSelected] = useState<keyof typeof ranges>("arrows");
+  const [params, setParams] = useSearchParams();
+
+  const selectedParam = params.get("unicode_type");
+
+  const selected =
+    selectedParam && selectedParam in ranges
+      ? (selectedParam as keyof typeof ranges)
+      : "arrows";
 
   const unicodes = getUnicodes(...ranges[selected]);
+
+  const handleChange = (value: keyof typeof ranges) => {
+    setParams({ unicode_type: value });
+  };
 
   return (
     <div className="home">
@@ -15,7 +26,7 @@ const Home = () => {
       <select
         className="home__select"
         value={selected}
-        onChange={(e) => setSelected(e.target.value as keyof typeof ranges)}
+        onChange={(e) => handleChange(e.target.value as keyof typeof ranges)}
       >
         {Object.keys(ranges).map((key) => (
           <option key={key} value={key}>
@@ -25,7 +36,7 @@ const Home = () => {
       </select>
 
       <div className="unicode-grid">
-        {unicodes.slice(0, 100).map((item) => (
+        {unicodes.map((item) => (
           <button
             key={item.code}
             className="unicode-grid__item"
