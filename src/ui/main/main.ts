@@ -1,6 +1,7 @@
 import "./main.scss";
 import { ranges } from "../../unicode/constants";
 import { getUnicodes } from "../../unicode/utils";
+import { AeroToast } from "@hn250424/aero";
 
 export function init() {
 	const selected = getSelectedFromURL();
@@ -32,6 +33,7 @@ export function init() {
 			const char = target.dataset.char;
 			if (char) {
 				navigator.clipboard.writeText(char);
+				AeroToast.show("Copied!");
 			}
 		}
 	});

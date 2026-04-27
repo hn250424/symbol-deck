@@ -9,6 +9,7 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@hn250424/aero": "^0.1.4",
         "sass": "^1.87.0"
     },
     "devDependencies": {
