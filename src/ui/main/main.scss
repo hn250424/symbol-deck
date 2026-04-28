@@ -1,4 +1,21 @@
-#grid-container {
+main {
+	display: flex;
+}
+
+#nav-container {
+	width: 200px;
+	background-color: green;
+}
+
+#nav-container .nav-item {
+
+	&:hover {
+		cursor: pointer;
+		background-color: bisque;
+	}
+}
+
+#unicode-container {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   gap: 8px;

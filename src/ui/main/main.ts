@@ -4,30 +4,19 @@ import { getUnicodes } from "../../unicode/utils";
 import { AeroToast } from "@hn250424/aero";
 
 export function init() {
-	const selected = getSelectedFromURL();
+	const navContainer = document.getElementById("nav-container")!;
+	const unicodeContainer = document.getElementById("unicode-container")!;
 
-	// Build select options
-	const options = Object.keys(ranges)
-		.map(
-			(key) =>
-				`<option value="${key}"${key === selected ? " selected" : ""}>${key}</option>`
-		)
-		.join("");
+	navContainer.addEventListener("click", (e) => {
+		const item = e.target as HTMLElement;
+		if (!item || !item.classList.contains("nav-item")) return;
 
-	renderGrid(selected);
-
-	// Select change → update URL + re-render grid
-	const select = document.getElementById("unicode-select") as HTMLSelectElement;
-	select.innerHTML = options
-	select.addEventListener("change", () => {
-		const value = select.value as keyof typeof ranges;
-		updateURL(value);
-		renderGrid(value);
+		const key = item.dataset.key!
+		updateURL(key);
+		renderUnicode(unicodeContainer, key);
 	});
 
-	// Grid click → copy to clipboard
-	const grid = document.getElementById("grid-container")!;
-	grid.addEventListener("click", (e) => {
+	unicodeContainer.addEventListener("click", (e) => {
 		const target = e.target as HTMLElement;
 		if (target.classList.contains("unicode-item")) {
 			const char = target.dataset.char;
@@ -38,12 +27,20 @@ export function init() {
 		}
 	});
 
-	// Handle browser back/forward
 	window.addEventListener("popstate", () => {
 		const newSelected = getSelectedFromURL();
-		select.value = newSelected;
-		renderGrid(newSelected);
+		renderUnicode(unicodeContainer, newSelected);
 	});
+
+	Object.keys(ranges).map((key) => {
+		const div = document.createElement("div")
+		div.dataset.key = key
+		div.textContent = key
+		div.classList.add("nav-item")
+		navContainer.appendChild(div)
+	});
+
+	renderUnicode(unicodeContainer, getSelectedFromURL());
 }
 
 function getSelectedFromURL(): keyof typeof ranges {
@@ -59,15 +56,13 @@ function updateURL(value: string) {
 	window.history.pushState({}, "", url.toString());
 }
 
-function renderGrid(selected: keyof typeof ranges) {
-	const grid = document.getElementById("grid-container")!;
-	const unicodes = getUnicodes(...ranges[selected]);
+function renderUnicode(unicodeContainer: HTMLElement, key: keyof typeof ranges) {
+	const unicodes = getUnicodes(...ranges[key]);
 
-	grid.innerHTML = unicodes
+	unicodeContainer.innerHTML = unicodes
 		.map(
 			(item) =>
 				`<button class="unicode-item" title="${item.code}" data-char="${item.char}">${item.char}</button>`
 		)
 		.join("");
 }
-
