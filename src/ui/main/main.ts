@@ -1,7 +1,7 @@
 import "./main.scss";
 import { ranges } from "../../unicode/constants";
 import { getUnicodes } from "../../unicode/utils";
-import { AeroToast } from "@hn250424/aero";
+import { AeroToast } from "@taren250424/aero";
 
 export function init() {
 	const navContainer = document.getElementById("nav-container")!;
